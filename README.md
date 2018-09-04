@@ -1,0 +1,1 @@
+# cordova-honeywell-scanner-plugin
