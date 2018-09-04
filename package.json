@@ -1,6 +1,6 @@
 {
   "name": "cordova-honeywell-scanner-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Honeywell Scanner Plugin",
   "cordova": {
     "id": "cordova-honeywell-scanner-plugin",
