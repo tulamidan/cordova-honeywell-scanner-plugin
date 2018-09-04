@@ -1,0 +1,31 @@
+{
+  "name": "cordova-honeywell-scanner-plugin",
+  "version": "1.0.0",
+  "description": "Honeywell Scanner Plugin",
+  "cordova": {
+    "id": "cordova-honeywell-scanner-plugin",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmdiwakara/cordova-honeywell-scanner-plugin.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "tmdiwakara",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tmdiwakara/cordova-honeywell-scanner-plugin/issues"
+  },
+  "homepage": "https://github.com/tmdiwakara/cordova-honeywell-scanner-plugin#readme"
+}
