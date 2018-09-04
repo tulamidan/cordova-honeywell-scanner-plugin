@@ -2,7 +2,7 @@
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="cordova-honeywell-scanner-plugin" 
-        version="1.0.3">
+        version="1.0.1">
     <name>HoneywellScanner</name>
     <description>Honeywell Scanner Plugin</description>
     <engines>
