@@ -2,9 +2,12 @@ package com.tmdiwakara.cordova.honeywell;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
 import org.apache.cordova.CallbackContext;
@@ -14,6 +17,8 @@ import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
+
+import java.util.List;
 
 public class HoneywellScannerPlugin extends CordovaPlugin {
     private static final String TAG = "HoneywellScanner";
@@ -39,6 +44,7 @@ public class HoneywellScannerPlugin extends CordovaPlugin {
      * Values : String
      */
     private static final String EXTRA_PROFILE = "com.honeywell.aidc.extra.EXTRA_PROFILE";
+    private static final String EXTRA_SCANNER = "dcs.scanner.imager";
     /**
      * Honeywell DataCollection Intent API
      * Optional. Overrides the profile properties (non-persistent) until the next scanner claim.
@@ -125,7 +131,7 @@ public class HoneywellScannerPlugin extends CordovaPlugin {
     }
 
 private void claimScanner() {
-        Log.d("IntentApiSample: ", "claimScanner");
+        //Log.d("IntentApiSample: ", "claimScanner");
         Bundle properties = new Bundle();
         properties.putBoolean("DPR_DATA_INTENT", true);
         properties.putString("DPR_DATA_INTENT_ACTION", ACTION_BARCODE_DATA);
@@ -140,7 +146,7 @@ private void claimScanner() {
         );
     }
     private void releaseScanner() {
-        Log.d("IntentApiSample: ", "releaseScanner");
+        //Log.d("IntentApiSample: ", "releaseScanner");
         mysendBroadcast(new Intent(ACTION_RELEASE_SCANNER));
     }
 
@@ -165,14 +171,14 @@ private void claimScanner() {
     }
 
     private  void mysendBroadcast(Intent intent){
-        if(sdkVersion<26) {
+       /* if(sdkVersion<26) {
             sendBroadcast(intent);
         }else {
             //for Android O above "gives W/BroadcastQueue: Background execution not allowed: receiving Intent"
             //either set targetSDKversion to 25 or use implicit broadcast
             sendImplicitBroadcast(getApplicationContext(), intent);
-        }
-
+        }*/
+       sendImplicitBroadcast(getActivity().getApplicationContext(), intent);
     }
 
 
