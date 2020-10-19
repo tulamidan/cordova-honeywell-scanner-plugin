@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Build;
 import android.os.Bundle;
 
 import org.apache.cordova.CallbackContext;
@@ -171,14 +172,14 @@ private void claimScanner() {
     }
 
     private  void mysendBroadcast(Intent intent){
-       /* if(sdkVersion<26) {
-            sendBroadcast(intent);
+        if(Build.VERSION.SDK_INT<26) {
+            getActivity().getApplicationContext().sendBroadcast(intent);
         }else {
             //for Android O above "gives W/BroadcastQueue: Background execution not allowed: receiving Intent"
             //either set targetSDKversion to 25 or use implicit broadcast
-            sendImplicitBroadcast(getApplicationContext(), intent);
-        }*/
-       sendImplicitBroadcast(getActivity().getApplicationContext(), intent);
+            sendImplicitBroadcast(getActivity().getApplicationContext(), intent);
+        }
+       //sendImplicitBroadcast(getActivity().getApplicationContext(), intent);
     }
 
 
