@@ -77,7 +77,13 @@ public class HoneywellScannerPlugin extends CordovaPlugin {
             result.setKeepCallback(true);
             this.callbackContext.sendPluginResult(result);
 
-            getActivity().getApplicationContext().registerReceiver(barcodeDataReceiver, new IntentFilter(ACTION_BARCODE_DATA));
+            //getActivity().getApplicationContext().registerReceiver(barcodeDataReceiver, new IntentFilter(ACTION_BARCODE_DATA));
+			IntentFilter intent=new IntentFilter();
+			intent.addAction(ACTION_BARCODE_DATA);
+			//TODO: Honeywell needs the Category "android.intent.category.DEFAULT"
+			intent.addCategory("android.intent.category.DEFAULT");
+			getActivity().getApplicationContext().registerReceiver(this.barcodeDataReceiver, intent);
+
             claimScanner();
 
         }
@@ -118,17 +124,57 @@ public class HoneywellScannerPlugin extends CordovaPlugin {
         }
     }
 
-    private void claimScanner() {
+private void claimScanner() {
+        Log.d("IntentApiSample: ", "claimScanner");
         Bundle properties = new Bundle();
         properties.putBoolean("DPR_DATA_INTENT", true);
         properties.putString("DPR_DATA_INTENT_ACTION", ACTION_BARCODE_DATA);
-        getActivity().getApplicationContext().sendBroadcast(new Intent(ACTION_CLAIM_SCANNER)
-                .putExtra(EXTRA_PROFILE, "DEFAULT")
+
+        properties.putInt("TRIG_AUTO_MODE_TIMEOUT", 2);
+        properties.putString("TRIG_SCAN_MODE", "readOnRelease"); //This works for Hardware Trigger only! If scan is started from code, the code is responsible for a switching off the scanner before a decode
+
+        mysendBroadcast(new Intent(ACTION_CLAIM_SCANNER)
+                .putExtra(EXTRA_SCANNER, "dcs.scanner.imager")
+                .putExtra(EXTRA_PROFILE, "DEFAULT")// "MyProfile1")
                 .putExtra(EXTRA_PROPERTIES, properties)
         );
     }
-
     private void releaseScanner() {
-        getActivity().getApplicationContext().sendBroadcast(new Intent(ACTION_RELEASE_SCANNER));
+        Log.d("IntentApiSample: ", "releaseScanner");
+        mysendBroadcast(new Intent(ACTION_RELEASE_SCANNER));
     }
+
+    private static void sendImplicitBroadcast(Context ctxt, Intent i) {
+        PackageManager pm = ctxt.getPackageManager();
+        List<ResolveInfo> matches = pm.queryBroadcastReceivers(i, 0);
+        if (matches.size() > 0) {
+            for (ResolveInfo resolveInfo : matches) {
+                Intent explicit = new Intent(i);
+                ComponentName cn =
+                        new ComponentName(resolveInfo.activityInfo.applicationInfo.packageName,
+                                resolveInfo.activityInfo.name);
+
+                explicit.setComponent(cn);
+                ctxt.sendBroadcast(explicit);
+            }
+
+        } else{
+            // to be compatible with Android 9 and later version for dynamic receiver
+            ctxt.sendBroadcast(i);
+        }
+    }
+
+    private  void mysendBroadcast(Intent intent){
+        if(sdkVersion<26) {
+            sendBroadcast(intent);
+        }else {
+            //for Android O above "gives W/BroadcastQueue: Background execution not allowed: receiving Intent"
+            //either set targetSDKversion to 25 or use implicit broadcast
+            sendImplicitBroadcast(getApplicationContext(), intent);
+        }
+
+    }
+
+
+
 }
