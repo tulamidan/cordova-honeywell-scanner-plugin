@@ -1,5 +1,6 @@
 # cordova-honeywell-scanner-plugin
-Cordova Plugin to receive input from a Honeywell scanners (CT50, D75E, EDA50-111, others?).
+Cordova Plugin to receive input from a Honeywell scanners ( EDA51).
+I uses the Intend API and will work for Android > 7
 
 # Device Setup
 - No special device setup is required.
